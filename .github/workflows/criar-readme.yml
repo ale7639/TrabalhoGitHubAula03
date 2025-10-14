@@ -1,0 +1,29 @@
+name: 3 - Criar Arquivo de Texto
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  criar-arquivo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Criar e preencher o arquivo README.md
+        run: |
+          echo "# Arquivo gerado via GitHub Actions" > NOVO_README.md
+          echo "Este arquivo foi criado automaticamente em $(date)." >> NOVO_README.md
+          echo "Tarefa concluída!"
+
+      # Esta parte é opcional, mas útil para salvar o arquivo criado no repositório
+      - name: Fazer commit do novo arquivo
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add NOVO_README.md
+          # A linha a seguir evita um loop infinito de commits
+          git commit -m "CI: Adiciona NOVO_README.md via Action" || echo "Nenhuma mudança para commitar"
+          git push

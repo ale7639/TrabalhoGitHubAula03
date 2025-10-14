@@ -1,0 +1,31 @@
+name: 2 - Calcular, Listar e Contar Arquivos
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  operacoes:
+    runs-on: ubuntu-latest
+    steps:
+      # Primeiro, precisamos "baixar" o código do repositório para a máquina virtual
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Calcular 2+2 e salvar em variável
+        run: |
+          RESULTADO=$((2+2))
+          echo "O resultado de 2+2 é $RESULTADO"
+          echo "RESULTADO_CALCULO=$RESULTADO" >> $GITHUB_ENV
+
+      - name: Mostrar variável no terminal
+        run: echo "O valor guardado na variável é $RESULTADO_CALCULO"
+
+      - name: Listar todos os arquivos no repositório
+        run: ls -R
+
+      - name: Contar quantos arquivos HTML existem
+        run: |
+          COUNT=$(find . -type f -name "*.html" | wc -l)
+          echo "Número de arquivos HTML: $COUNT"

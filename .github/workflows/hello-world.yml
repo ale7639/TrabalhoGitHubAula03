@@ -1,0 +1,22 @@
+name: 1 - Hello World e Info do Push
+
+# Gatilho: a action roda a cada 'push' na branch 'main'
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Rodar em uma máquina virtual Linux (Ubuntu)
+    steps:
+      - name: Imprimir "Hello World"
+        run: echo "Hello World!"
+
+      - name: Mostrar data e hora do push
+        run: |
+          echo "Data e Hora: $(date)"
+
+      - name: Mostrar usuário do push
+        run: |
+          echo "Push realizado por: ${{ github.actor }}"

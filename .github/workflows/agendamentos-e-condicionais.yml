@@ -1,0 +1,38 @@
+name: 4 - Agendamentos e Condicionais
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Agenda para rodar todo dia à meia-noite (UTC)
+    - cron: '0 0 * * *'
+    # Agenda para rodar a cada 3 horas aos sábados
+    - cron: '0 */3 * * 6'
+
+jobs:
+  # Roda apenas à noite (definido pelo agendamento 'cron')
+  rodar-a-noite:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 0 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tarefa noturna
+        run: echo "Executando a tarefa agendada da meia-noite."
+
+  # Roda apenas aos sábados
+  rodar-aos-sabados:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 */3 * * 6'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tarefa de Sábado
+        run: echo "Hoje é sábado, executando a tarefa agendada."
+
+  # Roda apenas se um arquivo for maior que 100KB no push
+  verificar-tamanho-arquivo:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checar arquivos maiores que 100KB
+        run: |
+          find . -type f -size +100k -exec echo "ALERTA: O arquivo {} é maior que 100KB!" \;
